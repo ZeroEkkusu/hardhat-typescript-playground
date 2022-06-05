@@ -21,3 +21,11 @@ Run:
 ```sh
 node deploy.js
 ```
+
+<br>
+
+Encrypt:
+
+```sh
+PRIVATE_KEY_PASSWORD= node encryptKey.js
+```
