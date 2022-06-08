@@ -4,27 +4,27 @@ Based on [PatrickAlphaC/ethers-simple-storage-fcc](https://github.com/PatrickAlp
 
 ## Instructions
 
-Env:
+Set up envs:
 
 ```sh
 mv .env.example .env
 ```
 
-Compile:
+Compile contracts:
 
 ```sh
 yarn compile
 ```
 
-Run:
+Run script:
 
 ```sh
-node deploy.js
+yarn ts-node <script.ts>
 ```
 
 <br>
 
-Encrypt:
+Encrypt private key:
 
 ```sh
 PRIVATE_KEY_PASSWORD= node encryptKey.js
