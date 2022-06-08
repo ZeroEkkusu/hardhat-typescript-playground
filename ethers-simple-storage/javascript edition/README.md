@@ -1,0 +1,1 @@
+Replace the TypeScript files with the JavaScript files.

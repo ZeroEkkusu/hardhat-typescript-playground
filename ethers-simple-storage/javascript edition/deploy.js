@@ -23,7 +23,7 @@ async function main() {
   const contract = await contractFactory.deploy(/*{ chainId: 1337 }*/)
   // const deploymentReceipt = await contract.deployTransaction.wait(1);
   /*const tx = {
-    nonce: wallet.getTransactionCount(),
+    nonce: await wallet.getTransactionCount(),
     gasPrice: 20000000000,
     gasLimit: 1000000,
     to: null,
