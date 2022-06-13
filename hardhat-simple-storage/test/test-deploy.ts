@@ -11,6 +11,7 @@ describe("SimpleStorage", function () {
       "SimpleStorage"
     )) as SimpleStorage__factory
     simpleStorage = await simpleStorageFactory.deploy()
+    await simpleStorage.deployed()
   })
 
   it("Should start with a favorite number of 0", async function () {
