@@ -1,11 +1,15 @@
-const { ethers } = require("hardhat")
-const { /*expect,*/ assert } = require("chai")
+import { ethers } from "hardhat"
+import { /*expect,*/ assert } from "chai"
+import { SimpleStorage, SimpleStorage__factory } from "../typechain-types"
 
 describe("SimpleStorage", function () {
-  let simpleStorageFactory, simpleStorage
+  let simpleStorageFactory: SimpleStorage__factory
+  let simpleStorage: SimpleStorage
 
   beforeEach(async function () {
-    simpleStorageFactory = await ethers.getContractFactory("SimpleStorage")
+    simpleStorageFactory = (await ethers.getContractFactory(
+      "SimpleStorage"
+    )) as SimpleStorage__factory
     simpleStorage = await simpleStorageFactory.deploy()
   })
 
@@ -23,7 +27,7 @@ describe("SimpleStorage", function () {
     await transactionResponse.wait(1)
 
     const currentValue = await simpleStorage.retrieve()
-    assert.equal(currentValue, expectedValue)
+    assert.equal(currentValue.toString(), expectedValue)
   })
 
   it("Should add the person's name and their favorite number to the list and map their favorite number", async function () {
@@ -41,7 +45,7 @@ describe("SimpleStorage", function () {
       expectedName
     )
     assert.equal(person.name, expectedName)
-    assert.equal(person.favoriteNumber, expectedFavoriteNumber)
-    assert.equal(mappedFavoriteNumber, expectedFavoriteNumber)
+    assert.equal(person.favoriteNumber.toString(), expectedFavoriteNumber)
+    assert.equal(mappedFavoriteNumber.toString(), expectedFavoriteNumber)
   })
 })
