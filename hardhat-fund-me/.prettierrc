@@ -1,6 +1,6 @@
 {
-  "prettier.tabWidth": 2,
-  "prettier.semi": false,
-  "prettier.useTabs": false,
-  "prettier.singleQuote": false
+  "tabWidth": 2,
+  "semi": false,
+  "useTabs": false,
+  "singleQuote": false
 }
