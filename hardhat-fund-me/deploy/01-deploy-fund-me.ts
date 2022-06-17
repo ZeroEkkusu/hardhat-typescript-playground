@@ -6,7 +6,7 @@ import verify from "../utils/verify"
 const deployFundMe = async function (hre: HardhatRuntimeEnvironment) {
   // @ts-ignore
   const { deployments, getNamedAccounts, network } = hre
-  const { deploy, log, get } = deployments
+  const { deploy, /*log,*/ get } = deployments
   const { deployer } = await getNamedAccounts()
 
   let ethUsdPriceFeedAddress: string
