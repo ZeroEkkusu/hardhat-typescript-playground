@@ -1,4 +1,4 @@
-# SimpleStorage with Hardhat
+# FundMe with Hardhat
 
 Based on [PatrickAlphaC/hardhat-fund-me-fcc](https://github.com/PatrickAlphaC/hardhat-fund-me-fcc).
 
