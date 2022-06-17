@@ -1,3 +1,4 @@
+import { DeployFunction } from "hardhat-deploy/types"
 import { HardhatRuntimeEnvironment } from "hardhat/types"
 import {
   developmentChains,
@@ -5,8 +6,9 @@ import {
   INITIAL_ANSWER,
 } from "../helper-hardhat-config"
 
-// todo: explicit type
-const deployMocks = async function (hre: HardhatRuntimeEnvironment) {
+const deployMocks: DeployFunction = async function (
+  hre: HardhatRuntimeEnvironment
+) {
   // @ts-ignore
   const { deployments, getNamedAccounts, network } = hre
   const { deploy, log } = deployments

@@ -1,9 +1,11 @@
+import { DeployFunction } from "hardhat-deploy/types"
 import { HardhatRuntimeEnvironment } from "hardhat/types"
 import { developmentChains, networkConfig } from "../helper-hardhat-config"
 import verify from "../utils/verify"
 
-// todo: explicit type
-const deployFundMe = async function (hre: HardhatRuntimeEnvironment) {
+const deployFundMe: DeployFunction = async function (
+  hre: HardhatRuntimeEnvironment
+) {
   // @ts-ignore
   const { deployments, getNamedAccounts, network } = hre
   const { deploy, /*log,*/ get } = deployments
