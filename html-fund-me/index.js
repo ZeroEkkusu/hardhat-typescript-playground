@@ -4,11 +4,16 @@ import { abi, contractAddress } from "./constants.js"
 
 const connectButton = document.getElementById("connectButton")
 const fundButton = document.getElementById("fundButton")
+const balanceButton = document.getElementById("balanceButton")
+const withdrawButton = document.getElementById("withdrawButton")
+
 connectButton.onclick = connect
 fundButton.onclick = fund
+balanceButton.onclick = getBalance
+withdrawButton.onclick = withdraw
 
 async function connect() {
-  if (typeof window.ethereum !== "undefined") {
+  if (windowEthereumExists) {
     try {
       await window.ethereum.request({ method: "eth_requestAccounts" })
       connectButton.innerHTML = "Connected"
@@ -23,8 +28,9 @@ async function connect() {
 }
 
 async function fund() {
-  const ethAmount = "1"
-  if (typeof window.ethereum !== "undefined") {
+  const ethAmount = document.getElementById("ethAmount").value
+  if (ethAmount === "") return
+  if (windowEthereumExists) {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
     const contract = new ethers.Contract(contractAddress, abi, signer)
@@ -32,24 +38,48 @@ async function fund() {
       const transactionResponse = await contract.fund({
         value: ethers.utils.parseEther(ethAmount),
       })
-      console.log("before")
       await listenForTransactionMined(transactionResponse, provider)
-      console.log("after")
     } catch (error) {
       console.log(error)
     }
   }
+}
 
-  function listenForTransactionMined(transactionResponse, provider) {
-    console.log(`Mining ${transactionResponse.hash} ...`)
-    return new Promise((resolve, reject) => {
-      // listens for the first occurance of an Ethers event
-      provider.once(transactionResponse.hash, (transactionReceipt) => {
-        console.log(
-          `Completed with ${transactionReceipt.confirmations} confirmations`
-        )
-        resolve(10)
-      })
-    })
+async function getBalance() {
+  if (windowEthereumExists) {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const balance = await provider.getBalance(contractAddress)
+    console.log(ethers.utils.formatEther(balance))
   }
+}
+
+function listenForTransactionMined(transactionResponse, provider) {
+  console.log(`Mining ${transactionResponse.hash} ...`)
+  return new Promise((resolve, reject) => {
+    // listens for the first occurance of an Ethers `event`
+    provider.once(transactionResponse.hash, (transactionReceipt) => {
+      console.log(
+        `Completed with ${transactionReceipt.confirmations} confirmations`
+      )
+      resolve()
+    })
+  })
+}
+
+async function withdraw() {
+  if (windowEthereumExists) {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner()
+    const contract = new ethers.Contract(contractAddress, abi, signer)
+    try {
+      const transactionResponse = await contract.withdraw()
+      await listenForTransactionMined(transactionResponse, provider)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
+function windowEthereumExists() {
+  return typeof window.ethereum !== "undefined"
 }
