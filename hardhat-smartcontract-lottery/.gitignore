@@ -4,6 +4,7 @@ coverage
 coverage.json
 typechain-types
 .vscode
+deployments
 
 #Hardhat files
 cache

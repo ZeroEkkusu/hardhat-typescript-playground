@@ -34,8 +34,17 @@ const config: HardhatUserConfig = {
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
   },
+  namedAccounts: {
+    deployer: {
+      default: 0,
+    },
+    player: {
+      default: 1,
+    },
+  },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
+    token: "MATIC",
     currency: "USD",
   },
   etherscan: {
