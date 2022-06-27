@@ -1,7 +1,9 @@
 {
   "devDependencies": {
+    "@chainlink/contracts": "^0.4.1",
     "hardhat": "^2.9.9",
-    "hardhat-contract-sizer": "^2.5.1"
+    "hardhat-contract-sizer": "^2.5.1",
+    "hardhat-deploy": "^0.11.10"
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.6",
