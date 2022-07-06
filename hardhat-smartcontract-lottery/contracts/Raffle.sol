@@ -9,7 +9,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
   error Raffle__NotEnoughETHEntered();
   error Raffle__TransferFailed();
   error Raffle__NotOpen();
-  error Raffle_UpkeepNeeded(
+  error Raffle__UpkeepNotNeeded(
     uint256 currentBalance,
     uint256 numPlayers,
     uint256 raffleState
@@ -90,7 +90,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
   ) external {
     (bool upkeepNeeded, ) = checkUpkeep("");
     if (!upkeepNeeded)
-      revert Raffle_UpkeepNeeded(
+      revert Raffle__UpkeepNotNeeded(
         address(this).balance,
         players.length,
         uint256(raffleState)
@@ -156,5 +156,9 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
   function getRequestConfirmations() external pure returns (uint256) {
     return REQUEST_CONFIRMATIONS;
+  }
+
+  function getInterval() external view returns (uint256) {
+    return interval;
   }
 }
