@@ -74,7 +74,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
       bytes memory /*performData*/
     )
   {
-    // 1 day has passed
+    // X time has passed
     // At least 1 player and some ETH
     // Sufficient subscription funds
     // The lottery should be waiting for the result
