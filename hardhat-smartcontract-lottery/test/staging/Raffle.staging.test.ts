@@ -1,8 +1,8 @@
 import { expect, assert } from "chai"
 import { BigNumber } from "ethers"
 import { ethers, getNamedAccounts, network } from "hardhat"
-import { developmentChains } from "../../../helper-hardhat-config"
-import { Raffle } from "../../../typechain-types"
+import { developmentChains } from "../../helper-hardhat-config"
+import { Raffle } from "../../typechain-types"
 
 developmentChains.includes(network.name)
   ? describe.skip
