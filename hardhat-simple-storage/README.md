@@ -55,5 +55,5 @@ yarn hardhat coverage
 Verify a contract:
 
 ```sh
-yarn hardhat --network <network> <address>
+yarn hardhat verify --network <network> <address>
 ```
