@@ -58,10 +58,4 @@ Print coverage:
 yarn coverage
 ```
 
-Verify a contract:
-
-```sh
-yarn hardhat --network <network> <address>
-```
-
 Debug TypeScript with VSCode
