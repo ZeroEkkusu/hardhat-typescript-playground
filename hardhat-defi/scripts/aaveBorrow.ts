@@ -34,6 +34,10 @@ async function main() {
   )
   await borrowDai(lendingPool, amountDaiToBorrowWei, deployer)
   await getBorrowUserData(lendingPool, deployer)
+
+  // Repay
+  await repay(amountDaiToBorrowWei, lendingPool, deployer)
+  await getBorrowUserData(lendingPool, deployer)
 }
 
 async function getLendingPool(): Promise<ILendingPool> {
@@ -114,6 +118,23 @@ async function borrowDai(
   await borrowTx.wait(1)
 
   console.log("Borrowed")
+}
+
+async function repay(
+  amount: BigNumber,
+  lendingPool: ILendingPool,
+  account: SignerWithAddress
+) {
+  const daiAddress = networkConfig[network.name].daiAddress!
+  await approveErc20(daiAddress, lendingPool.address, amount, account)
+  const repayTx = await lendingPool.repay(
+    daiAddress,
+    amount,
+    "2",
+    account.address
+  )
+  await repayTx.wait(1)
+  console.log("Repaid")
 }
 
 main().catch((error) => {
