@@ -20,7 +20,9 @@ const getWeth = async function () {
   )
   await (await iWeth.deposit({ value: AMOUNT })).wait(1)
   const wethBalance = await iWeth.balanceOf(deployer.address)
-  console.log(`Balance: ${wethBalance}`)
+  console.log(
+    `Balance: ${wethBalance} (${ethers.utils.formatEther(wethBalance)})`
+  )
 }
 
 export { getWeth, AMOUNT }
