@@ -8,13 +8,32 @@ import { ILendingPoolAddressesProvider } from "../typechain-types/ILendingPoolAd
 import { getWeth, AMOUNT } from "./getWeth"
 
 async function main() {
+  // Wrap the coin
   await getWeth()
+
+  // Deposit
   const [deployer] = await ethers.getSigners()
   const lendingPool = await getLendingPool()
   const wethTokenAddress = networkConfig[network.name].wrappedCoin!
   await approveErc20(wethTokenAddress, lendingPool.address, AMOUNT, deployer)
   await lendingPool.deposit(wethTokenAddress, AMOUNT, deployer.address, 0)
   console.log("Deposited")
+
+  // Borrow
+  let { availableBorrowsETH, totalDebtETH } = await getBorrowUserData(
+    lendingPool,
+    deployer
+  )
+  const daiPrice = await getDaiPrice()
+  const amountDaiToBorrow =
+    // @ts-ignore
+    (availableBorrowsETH.toString() * 0.95) / daiPrice.toNumber()
+  console.log(`Borrowable DAI: ${amountDaiToBorrow}`)
+  const amountDaiToBorrowWei = ethers.utils.parseEther(
+    amountDaiToBorrow.toFixed(18).toString()
+  )
+  await borrowDai(lendingPool, amountDaiToBorrowWei, deployer)
+  await getBorrowUserData(lendingPool, deployer)
 }
 
 async function getLendingPool(): Promise<ILendingPool> {
@@ -44,6 +63,57 @@ async function approveErc20(
   )
   await (await erc20Token.approve(spenderAddress, amountToSpend)).wait(1)
   console.log("Approved")
+}
+
+async function getBorrowUserData(
+  lendingPool: ILendingPool,
+  account: SignerWithAddress
+) {
+  const { totalCollateralETH, totalDebtETH, availableBorrowsETH } =
+    await lendingPool.getUserAccountData(account.address)
+
+  console.log(
+    `Total collateral: ${totalCollateralETH} (${ethers.utils.formatEther(
+      totalCollateralETH
+    )})`
+  )
+  console.log(
+    `Total debt: ${totalDebtETH} (${ethers.utils.formatEther(totalDebtETH)})`
+  )
+  console.log(
+    `Available borrows: ${availableBorrowsETH} (${ethers.utils.formatEther(
+      availableBorrowsETH
+    )})`
+  )
+
+  return { availableBorrowsETH, totalDebtETH }
+}
+
+async function getDaiPrice() {
+  const daiEthPriceFeed = await ethers.getContractAt(
+    "AggregatorV3Interface",
+    networkConfig[network.name].daiEthPriceFeed!
+  )
+  const { answer } = await daiEthPriceFeed.latestRoundData()
+  console.log(`DAI/ETH: ${answer} (${ethers.utils.formatEther(answer)})`)
+  return answer
+}
+
+async function borrowDai(
+  lendingPool: ILendingPool,
+  amountDaiToBorrowWei: BigNumber,
+  account: SignerWithAddress
+) {
+  const borrowTx = await lendingPool.borrow(
+    networkConfig[network.name].daiAddress!,
+    amountDaiToBorrowWei,
+    "2",
+    "0",
+    account.address
+  )
+  await borrowTx.wait(1)
+
+  console.log("Borrowed")
 }
 
 main().catch((error) => {
