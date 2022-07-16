@@ -1,13 +1,23 @@
-# Sample Hardhat Project
+# Defi with Hardhat
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+Based on [PatrickAlphaC/hardhat-defi-fcc](https://github.com/PatrickAlphaC/hardhat-defi-fcc).
 
-Try running some of the following tasks:
+## Instructions
 
-```shell
-npx hardhat help
-npx hardhat test
-GAS_REPORT=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
+Set up envs:
+
+```sh
+mv .env.example .env
+```
+
+Compile:
+
+```sh
+yarn hardhat compile
+```
+
+Run the script:
+
+```sh
+yarn hardhat run scripts/aaveBorrow.ts
 ```
