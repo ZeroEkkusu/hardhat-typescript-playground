@@ -13,3 +13,12 @@ export default async function () {
     networkConfig[network.name].blockConfirmations || 1
   )
 
+  if (
+    !developmentChains.includes(network.name) &&
+    process.env.ETHERSCAN_API_KEY
+  ) {
+    await verify(basicNft.address, args)
+  }
+}
+
+module.exports.default()
