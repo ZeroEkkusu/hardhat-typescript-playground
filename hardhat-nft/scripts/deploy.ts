@@ -1,8 +1,13 @@
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
 import { ethers, network } from "hardhat"
 import { developmentChains, networkConfig } from "../helper-hardhat-config"
+import { BasicNft } from "../typechain-types"
 import verify from "../utils/verify"
 
-export default async function () {
+export default async function (): Promise<{
+  deployer: SignerWithAddress
+  basicNft: BasicNft
+}> {
   const [deployer] = await ethers.getSigners()
 
   const args: [] = []
@@ -19,6 +24,6 @@ export default async function () {
   ) {
     await verify(basicNft.address, args)
   }
-}
 
-module.exports.default()
+  return { deployer, basicNft }
+}
